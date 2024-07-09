@@ -7,13 +7,35 @@ import { Modal, Button, Form, Input } from "antd";
 
 const { TextArea } = Input;
 
-const CommentModal = ({ visible, onClose, onSubmit }) => {
+const CommentModal = ({ imagePostId, visible, onClose }) => {
   const [form] = Form.useForm();
 
-  const handleFinish = (values) => {
-    onSubmit(values);
-    form.resetFields();
-    onClose();
+  const handleFinish = async (values) => {
+    try {
+      const response = await fetch("http://localhost:5000/comment", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json", // Specify content type JSON
+        },
+        body: JSON.stringify({
+          // Convert body to JSON string
+          content: values.content,
+          imagePostId: imagePostId,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Network response was not ok.");
+      }
+
+      // Handle success
+      // Reset form fields and close modal or whatever your logic is
+      form.resetFields();
+      onClose();
+    } catch (error) {
+      console.error("Upload error:", error);
+      message.error("Upload failed.");
+    }
   };
 
   return (
@@ -24,13 +46,6 @@ const CommentModal = ({ visible, onClose, onSubmit }) => {
       footer={null}
     >
       <Form form={form} onFinish={handleFinish} layout="vertical">
-        <Form.Item
-          name="author"
-          label="Name"
-          rules={[{ required: true, message: "Please enter your name" }]}
-        >
-          <Input />
-        </Form.Item>
         <Form.Item
           name="content"
           label="Comment"

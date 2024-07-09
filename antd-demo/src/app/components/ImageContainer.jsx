@@ -1,14 +1,30 @@
-// components/ImageContainer.js
-
 import React from "react";
-import { Card, Image, Button } from "antd";
-import Meta from "antd/lib/card/Meta";
-import { useState } from "react";
-import Text from "antd/lib/typography/Text";
+import { Card, Image, Button, Typography, Spin, Flex } from "antd";
 import CommentModal from "./CommentModal";
+import ViewCommentModal from "./ViewCommentModal";
+const { Text } = Typography;
 
-const ImageContainer = ({ photo, addComment }) => {
-  const [isModalVisible, setIsModalVisible] = useState(false);
+const ImageContainer = ({ photo }) => {
+  const [isModalVisible, setIsModalVisible] = React.useState(false);
+  const [loadingComments, setLoadingComments] = React.useState(false);
+  const [isViewCommentModalVisible, setIsViewCommentModalVisible] =
+    React.useState(false);
+  const [comments, setComments] = React.useState([]);
+
+  const handleViewComment = async () => {
+    try {
+      setLoadingComments(true);
+      const response = await fetch(`http://localhost:5000/comment/${photo.id}`);
+      const data = await response.json();
+      setComments(data);
+      showViewCommentModal();
+    } catch (err) {
+      console.error("Failed to get comments:", error);
+      res.status(500).json({ error: "Failed to get comments" });
+    } finally {
+      setLoadingComments(false);
+    }
+  };
 
   const showModal = () => {
     setIsModalVisible(true);
@@ -18,32 +34,49 @@ const ImageContainer = ({ photo, addComment }) => {
     setIsModalVisible(false);
   };
 
-  const handleAddComment = (comment) => {
-    addComment(photo.id, comment);
+  const showViewCommentModal = () => {
+    setIsViewCommentModalVisible(true);
+  };
+
+  const handleViewCommentModalClose = () => {
+    setIsViewCommentModalVisible(false);
   };
 
   return (
     <Card
       hoverable
-      cover={<Image alt={photo.title} src={photo.url} />}
-      actions={[<Button onClick={showModal}>Add Comment</Button>]}
+      cover={
+        <Image
+          alt={photo.title}
+          src={photo.imageUrl}
+          style={{ height: 300, objectFit: "cover" }}
+        />
+      }
+      actions={[
+        <Button
+          key="comment"
+          onClick={handleViewComment}
+          disabled={loadingComments}
+        >
+          {loadingComments ? <Spin size="small" /> : "View Comments"}
+        </Button>,
+        <Button key="add" onClick={showModal}>
+          Add Comment
+        </Button>,
+      ]}
     >
-      <Meta title={photo.title} description={photo.description} />
-      <div style={{ marginTop: "10px" }}>
-        {photo.comments && photo.comments.length > 0 ? (
-          photo.comments.map((comment, index) => (
-            <Text key={index} type="secondary">
-              {comment.author}: {comment.content}
-            </Text>
-          ))
-        ) : (
-          <Text type="secondary">No comments yet</Text>
-        )}
-      </div>
+      <Flex justify="center">
+        <Card.Meta title={photo.title} description={photo.description} />
+      </Flex>
       <CommentModal
+        imagePostId={photo.id}
         visible={isModalVisible}
         onClose={handleClose}
-        onSubmit={handleAddComment}
+      />
+      <ViewCommentModal
+        visible={isViewCommentModalVisible}
+        onClose={handleViewCommentModalClose}
+        comments={comments}
       />
     </Card>
   );
