@@ -33,7 +33,10 @@ app.use(
 app.use(express.urlencoded({ extended: true }));
 
 app.use(express.static("public"));
-// app.use("/api", api);
+
+app.get("/", (req, res) => {
+  res.send("Welcome to the API");
+});
 
 app.post("/upload", upload.single("image"), async (req, res) => {
   if (!req.file) {
