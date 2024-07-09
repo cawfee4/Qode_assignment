@@ -93,13 +93,13 @@ const Home = () => {
         {loading
           ? // Show skeleton loading while fetching data
             Array.from({ length: 6 }).map((_, index) => (
-              <Col key={index} span={8}>
+              <Col key={index} xs={24} sm={12} md={8} lg={6}>
                 <Skeleton active />
               </Col>
             ))
           : // Show ImageContainers once data is fetched
             photos.map((photo) => (
-              <Col key={photo.id} span={8}>
+              <Col key={photo.id} xs={24} sm={12} md={8} lg={6}>
                 <ImageContainer photo={photo} />
               </Col>
             ))}
