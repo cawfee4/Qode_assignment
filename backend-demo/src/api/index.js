@@ -2,39 +2,39 @@ const router = require("express").Router();
 const multer = require("multer");
 const db = require("../models");
 
-const storage = multer.diskStorage({
-  destination: "./public/uploads",
-  filename: (req, file, cb) => {
-    cb(null, `${Date.now()}-${file.originalname}`);
-  },
-});
+// const storage = multer.diskStorage({
+//   destination: "./public/uploads",
+//   filename: (req, file, cb) => {
+//     cb(null, `${Date.now()}-${file.originalname}`);
+//   },
+// });
 
-const upload = multer({ storage });
+// const upload = multer({ storage });
 
-router.post("/upload", upload.single("image"), async (req, res) => {
-  if (!req.file) {
-    return res.status(400).json({ error: "No file uploaded" });
-  }
+// router.post("/upload", upload.single("image"), async (req, res) => {
+//   if (!req.file) {
+//     return res.status(400).json({ error: "No file uploaded" });
+//   }
 
-  const filePath = `${process.env.BASE_URL}/uploads/${req.file.filename}`;
-  const { title } = req.body;
+//   const filePath = `${process.env.BASE_URL}/uploads/${req.file.filename}`;
+//   const { title } = req.body;
 
-  try {
-    // Store the image URL in the ImagePost table
-    const imagePost = await db.ImagePost.create({
-      title,
-      imageUrl: filePath,
-    });
+//   try {
+//     // Store the image URL in the ImagePost table
+//     const imagePost = await db.ImagePost.create({
+//       title,
+//       imageUrl: filePath,
+//     });
 
-    res.json({
-      message: "File uploaded successfully",
-      imagePost,
-    });
-  } catch (error) {
-    console.error("Failed to store image URL:", error);
-    res.status(500).json({ error: "Failed to store image URL" });
-  }
-});
+//     res.json({
+//       message: "File uploaded successfully",
+//       imagePost,
+//     });
+//   } catch (error) {
+//     console.error("Failed to store image URL:", error);
+//     res.status(500).json({ error: "Failed to store image URL" });
+//   }
+// });
 router.get("/allposts", async (req, res) => {
   const posts = await db.ImagePost.findAll().catch((error) => {
     console.error("Failed to get posts:", error);
