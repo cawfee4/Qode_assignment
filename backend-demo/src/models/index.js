@@ -23,11 +23,6 @@ sequelize = new Sequelize(
     host: process.env.DB_HOST,
     dialect: "postgres",
     dialectModule: pg,
-    ssl: true,
-    define: {
-      charset: "utf8mb4",
-      dialectOptions: { collate: "utf8mb4_unicode_ci" },
-    },
     dialectOptions: {
       ssl: {
         require: true,
