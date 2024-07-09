@@ -1,20 +1,20 @@
 {
   "version": 2,
-  "public": true,
   "builds": [
     {
       "src": "server.js",
-      "use": "@vercel/node"
+      "use": "@vercel/node",
+      "config": { "includeFiles": ["dist/**"] }
     }
   ],
   "routes": [
     {
-      "src": "/((?!.*\\.\\w+$).*)",
-      "dest": "/server.js"
-    },
-    {
-      "src": "/(.+\\.[a-z]+)$",
-      "dest": "/public/$1"
+      "src": "/(.*)",
+      "dest": "server.js",
+      "methods": ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
+      "headers": {
+        "Access-Control-Allow-Origin": "*"
+      }
     }
   ]
 }

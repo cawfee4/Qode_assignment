@@ -1,40 +1,58 @@
 const router = require("express").Router();
 const multer = require("multer");
 const db = require("../models");
+const cloudinary = require("cloudinary").v2;
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
 
-// const storage = multer.diskStorage({
-//   destination: "./public/uploads",
-//   filename: (req, file, cb) => {
-//     cb(null, `${Date.now()}-${file.originalname}`);
-//   },
-// });
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
 
-// const upload = multer({ storage });
+router.post("/upload", upload.single("image"), async (req, res) => {
+  if (!req.file) {
+    return res.status(400).json({ error: "No file uploaded" });
+  }
 
-// router.post("/upload", upload.single("image"), async (req, res) => {
-//   if (!req.file) {
-//     return res.status(400).json({ error: "No file uploaded" });
-//   }
+  const { title } = req.body;
 
-//   const filePath = `${process.env.BASE_URL}/uploads/${req.file.filename}`;
-//   const { title } = req.body;
+  try {
+    const result = await cloudinary.uploader.upload_stream(
+      {
+        folder: "qode_app",
+      },
+      (error, result) => {
+        if (error) {
+          return res
+            .status(500)
+            .json({ error: "Error uploading image to Cloudinary" });
+        }
 
-//   try {
-//     // Store the image URL in the ImagePost table
-//     const imagePost = await db.ImagePost.create({
-//       title,
-//       imageUrl: filePath,
-//     });
+        db.ImagePost.create({
+          title,
+          imageUrl: result.secure_url,
+        })
+          .then((imagePost) => {
+            res.json({
+              message: "File uploaded successfully",
+              imagePost,
+            });
+          })
+          .catch((error) => {
+            console.error("Error creating ImagePost record:", error);
+            res.status(500).json({ error: "Error creating ImagePost record" });
+          });
+      }
+    );
 
-//     res.json({
-//       message: "File uploaded successfully",
-//       imagePost,
-//     });
-//   } catch (error) {
-//     console.error("Failed to store image URL:", error);
-//     res.status(500).json({ error: "Failed to store image URL" });
-//   }
-// });
+    result.end(req.file.buffer);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Error uploading image to Cloudinary" });
+  }
+});
 router.get("/allposts", async (req, res) => {
   const posts = await db.ImagePost.findAll().catch((error) => {
     console.error("Failed to get posts:", error);
