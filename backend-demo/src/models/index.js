@@ -5,23 +5,47 @@ const path = require("path");
 const Sequelize = require("sequelize");
 const process = require("process");
 const basename = path.basename(__filename);
-const env = process.env.NODE_ENV || "development";
-const config = require(path.join(__dirname, "../..", "config", "config.js"))[
-  env
-];
+const pg = require("pg");
+const dotenv = require("dotenv");
+// const env = process.env.NODE_ENV || "development";
+// const config = require(path.join(__dirname, "../..", "config", "config.js"))[
+//   env
+// ];
 const db = {};
+dotenv.config();
 
 let sequelize;
-if (config.use_env_variable) {
-  sequelize = new Sequelize(process.env[config.use_env_variable], config);
-} else {
-  sequelize = new Sequelize(
-    config.database,
-    config.username,
-    config.password,
-    config
-  );
-}
+sequelize = new Sequelize(
+  process.env.POSTGRES_DATABASE,
+  process.env.POSTGRES_USER,
+  process.env.POSTGRES_PASSWORD,
+  {
+    host: process.env.DB_HOST,
+    dialect: "postgres",
+    dialectModule: pg,
+    ssl: true,
+    define: {
+      charset: "utf8mb4",
+      dialectOptions: { collate: "utf8mb4_unicode_ci" },
+    },
+    dialectOptions: {
+      ssl: {
+        require: true,
+        rejectUnauthorized: false,
+      },
+    },
+  }
+);
+// if (config.use_env_variable) {
+//   sequelize = new Sequelize(process.env[config.use_env_variable], config);
+// } else {
+//   sequelize = new Sequelize(
+//     config.database,
+//     config.username,
+//     config.password,
+//     config
+//   );
+// }
 
 fs.readdirSync(__dirname)
   .filter((file) => {
