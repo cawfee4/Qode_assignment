@@ -3,7 +3,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { Modal, Button, Form, Input } from "antd";
+import { Modal, Button, Form, Input, message } from "antd";
 import base_route from "../utils/routing";
 
 const { TextArea } = Input;
@@ -32,6 +32,7 @@ const CommentModal = ({ imagePostId, visible, onClose }) => {
       // Handle success
       // Reset form fields and close modal or whatever your logic is
       form.resetFields();
+      message.success("Comment added successfully.");
       onClose();
     } catch (error) {
       console.error("Upload error:", error);
