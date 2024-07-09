@@ -44,6 +44,7 @@ const Home = () => {
     } else if (title.length === 0) {
       message.error("Title must not be empty.");
       setTitle("");
+      return;
     }
     const formData = new FormData();
     formData.append("image", file);
