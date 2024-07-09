@@ -1,5 +1,5 @@
 const dotenv = require("dotenv");
-import pg from "pg";
+const pg = require("pg");
 
 dotenv.config();
 
@@ -11,8 +11,8 @@ module.exports = {
     logging: false,
     timezone: "+07:00",
     host: process.env.DB_HOST,
-    dialectModule: pg,
     dialect: "postgres",
+    dialectModule: pg,
     ssl: true,
     define: {
       charset: "utf8mb4",
@@ -30,8 +30,8 @@ module.exports = {
     password: process.env.POSTGRES_PASSWORD,
     database: process.env.POSTGRES_DATABASE,
     host: process.env.DB_HOST,
-    dialectModule: pg,
     dialect: "postgres",
+    dialectModule: pg,
     dialectOptions: {
       ssl: {
         require: true,
@@ -44,8 +44,8 @@ module.exports = {
     password: process.env.POSTGRES_PASSWORD,
     database: process.env.POSTGRES_DATABASE,
     host: process.env.DB_HOST,
-    dialectModule: pg,
     dialect: "postgres",
+    dialectModule: pg,
     dialectOptions: {
       ssl: {
         require: true,
