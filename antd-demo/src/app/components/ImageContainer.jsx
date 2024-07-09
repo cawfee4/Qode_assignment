@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Card, Image, Button, Spin, Flex } from "antd";
+import { Card, Image, Button, Spin, Flex, Typography } from "antd";
 import CommentModal from "./CommentModal";
 import ViewCommentModal from "./ViewCommentModal";
 import base_route from "../utils/routing";
@@ -66,7 +66,7 @@ const ImageContainer = ({ photo }) => {
       ]}
     >
       <Flex justify="center">
-        <Card.Meta title={photo.title} description={photo.description} />
+        <Typography.Title level={2}>{photo.title}</Typography.Title>
       </Flex>
       <CommentModal
         imagePostId={photo.id}

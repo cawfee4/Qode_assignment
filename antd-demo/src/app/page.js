@@ -37,6 +37,14 @@ const Home = () => {
   }, []);
 
   const handleUpload = async (file) => {
+    if (title.length >= 15) {
+      message.error("Title must be less than 15 characters.");
+      setTitle("");
+      return;
+    } else if (title.length === 0) {
+      message.error("Title must not be empty.");
+      setTitle("");
+    }
     const formData = new FormData();
     formData.append("image", file);
     formData.append("title", title);
