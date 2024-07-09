@@ -4,6 +4,7 @@
 
 import React, { useState } from "react";
 import { Modal, Button, Form, Input } from "antd";
+import base_route from "../utils/routing";
 
 const { TextArea } = Input;
 
@@ -12,7 +13,7 @@ const CommentModal = ({ imagePostId, visible, onClose }) => {
 
   const handleFinish = async (values) => {
     try {
-      const response = await fetch("http://localhost:5000/comment", {
+      const response = await fetch(`${base_route}/comment`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json", // Specify content type JSON

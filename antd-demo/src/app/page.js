@@ -14,6 +14,7 @@ import {
 } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
 import ImageContainer from "./components/ImageContainer";
+import base_route from "./utils/routing";
 
 const Home = () => {
   const [photos, setPhotos] = useState([]);
@@ -24,7 +25,7 @@ const Home = () => {
   useEffect(() => {
     const fetchPhotos = async () => {
       try {
-        const response = await fetch("http://localhost:5000/allposts");
+        const response = await fetch(`${base_route}/allposts`);
         const data = await response.json();
         setPhotos(data);
         setLoading(false); // Set loading to false once data is fetched
@@ -42,7 +43,7 @@ const Home = () => {
     try {
       setIsUploading(true);
       setTitle("");
-      const response = await fetch("http://localhost:5000/upload", {
+      const response = await fetch(`${base_route}/upload`, {
         method: "POST",
         body: formData,
       });

@@ -1,20 +1,20 @@
-import React from "react";
-import { Card, Image, Button, Typography, Spin, Flex } from "antd";
+import { useState } from "react";
+import { Card, Image, Button, Spin, Flex } from "antd";
 import CommentModal from "./CommentModal";
 import ViewCommentModal from "./ViewCommentModal";
-const { Text } = Typography;
+import base_route from "../utils/routing";
 
 const ImageContainer = ({ photo }) => {
-  const [isModalVisible, setIsModalVisible] = React.useState(false);
-  const [loadingComments, setLoadingComments] = React.useState(false);
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [loadingComments, setLoadingComments] = useState(false);
   const [isViewCommentModalVisible, setIsViewCommentModalVisible] =
-    React.useState(false);
-  const [comments, setComments] = React.useState([]);
+    useState(false);
+  const [comments, setComments] = useState([]);
 
   const handleViewComment = async () => {
     try {
       setLoadingComments(true);
-      const response = await fetch(`http://localhost:5000/comment/${photo.id}`);
+      const response = await fetch(`${base_route}/comment/${photo.id}`);
       const data = await response.json();
       setComments(data);
       showViewCommentModal();
