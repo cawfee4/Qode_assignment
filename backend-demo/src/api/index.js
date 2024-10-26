@@ -11,6 +11,8 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
+console.log("test")
+
 router.post("/upload", upload.single("image"), async (req, res) => {
   if (!req.file) {
     return res.status(400).json({ error: "No file uploaded" });
