@@ -19,6 +19,16 @@ console.log('feature 1');
 console.log('feature 4');
 console.log('feature 3');
 
+const isOdd = (input) => {
+  return input % 2 !== 0;
+}
+
+const isEven = (input) => {
+  return input % 2 === 0;
+}
+
+
+console.log('is this feature even?', isEven(5));
 router.post("/upload", upload.single("image"), async (req, res) => {
   if (!req.file) {
     return res.status(400).json({ error: "No file uploaded" });
