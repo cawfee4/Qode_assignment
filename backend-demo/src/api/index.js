@@ -13,7 +13,11 @@ cloudinary.config({
 
 console.log("test")
 
+<<<<<<< HEAD
 console.log("test 2")
+=======
+console.log("test 1")
+>>>>>>> develop
 
 router.post("/upload", upload.single("image"), async (req, res) => {
   if (!req.file) {
