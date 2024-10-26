@@ -17,6 +17,7 @@ console.log('feature 2')
 console.log('feature 1');
 
 console.log('feature 4');
+console.log('feature 3');
 
 router.post("/upload", upload.single("image"), async (req, res) => {
   if (!req.file) {
