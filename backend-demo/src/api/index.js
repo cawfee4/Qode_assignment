@@ -16,6 +16,8 @@ cloudinary.config({
 console.log('feature 2')
 console.log('feature 1');
 
+console.log('feature 3');
+
 router.post("/upload", upload.single("image"), async (req, res) => {
   if (!req.file) {
     return res.status(400).json({ error: "No file uploaded" });
