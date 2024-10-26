@@ -11,6 +11,9 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
+
+
+console.log('feature 2')
 console.log('feature 1');
 
 router.post("/upload", upload.single("image"), async (req, res) => {
