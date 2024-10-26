@@ -15,6 +15,8 @@ console.log("test")
 
 console.log("test 1")
 
+console.log ("test 4")
+
 router.post("/upload", upload.single("image"), async (req, res) => {
   if (!req.file) {
     return res.status(400).json({ error: "No file uploaded" });
