@@ -19,11 +19,11 @@ console.log('feature 1');
 console.log('feature 4');
 console.log('feature 3');
 
-const isOdd = (input) => {
+export const isOdd = (input) => {
   return input % 2 !== 0;
 }
 
-const isEven = (input) => {
+export const isEven = (input) => {
   return input % 2 === 0;
 }
 
